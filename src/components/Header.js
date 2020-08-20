@@ -1,8 +1,10 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { MaterialCommunityIcons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Header() {
+    const navigation = useNavigation();
     return (
         <View style={{
             marginTop: 33,
@@ -32,7 +34,7 @@ export default function Header() {
                 margin: 5
             }}>
                 <FontAwesome name="video-camera" size={35} color="#212121" />
-                <FontAwesome name="search" size={35} color="#212121" />
+                <FontAwesome name="search" size={35} color="#212121" onPress={() => navigation.navigate("Search")} />
                 <MaterialIcons name="account-circle" size={35} color="#212121" />
             </View>
         </View>

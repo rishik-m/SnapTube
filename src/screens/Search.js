@@ -2,13 +2,20 @@ import React, { useState } from 'react';
 import { View, ScrollView, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import MiniCard from '../components/MinCard';
+import { useSelector, useDispatch } from 'react-redux';
 
 
 // https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=songs&type=video&key=AIzaSyDTKlsqNopd7PbJVqMEp-OELL3APAeiytc
 
-const SearchScreen = () => {
+const SearchScreen = ({ navigation: { goBack } }) => {
     const [value, setValue] = useState("")
-    const [miniCardData, setMiniCard] = useState([])
+    // const [miniCardData, setMiniCard] = useState([])
+    const dispatch = useDispatch()
+
+    const miniCardData = useSelector(state => {
+        return state
+    })
+
     const [loading, setLoading] = useState(false)
     const fetchData = () => {
         setLoading(true)
@@ -16,7 +23,8 @@ const SearchScreen = () => {
             .then(res => res.json())
             .then(data => {
                 setLoading(false)
-                setMiniCard(data.items)
+                dispatch({ type: "add", payload: data.items })
+                // setMiniCard(data.items)
             })
     }
     return (
@@ -31,7 +39,7 @@ const SearchScreen = () => {
                 elevation: 5,
                 backgroundColor: 'white'
             }}>
-                <MaterialIcons name="keyboard-backspace" size={24} color="black" />
+                <MaterialIcons name="keyboard-backspace" size={24} color="black" onPress={() => goBack()} />
                 <TextInput
                     value={value}
                     onChangeText={text => setValue(text)}
