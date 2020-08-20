@@ -19,7 +19,7 @@ const SearchScreen = ({ navigation: { goBack } }) => {
     const [loading, setLoading] = useState(false)
     const fetchData = () => {
         setLoading(true)
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${value}&type=video&key=AIzaSyDTKlsqNopd7PbJVqMEp-OELL3APAeiytc`)
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${value}&type=video&key=AIzaSyDTKlsqNopd7PbJVqMEp-OELL3APAeiytc`)
             .then(res => res.json())
             .then(data => {
                 setLoading(false)
