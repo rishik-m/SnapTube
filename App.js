@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme, useTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from './src/screens/Home';
@@ -9,11 +9,35 @@ import VideoPlayer from './src/screens/VideoPlayer';
 import Explore from './src/screens/Explore';
 import Subscribe from './src/screens/Subscribe';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { Provider, useSelector } from 'react-redux';
+import { createStore, combineReducers } from 'redux';
 import { reducer } from './src/reducers/reducer';
+import { themeReducer } from './src/reducers/themeReducer';
 
-const store = createStore(reducer)
+const customDarkTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    headerColor: '#404040',
+    iconColor: 'white',
+  }
+};
+
+const customDefaultTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    headerColor: 'white',
+    iconColor: 'black',
+  }
+};
+
+const rootReducer = combineReducers({
+  cardData: reducer,
+  modeDark: themeReducer
+})
+
+const store = createStore(rootReducer)
 
 const Stack = createStackNavigator()
 const Tabs = createBottomTabNavigator()
@@ -49,17 +73,27 @@ const RootHome = () => {
   )
 }
 
-export default function App() {
+export default App = () => {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator headerMode='none'>
-          <Stack.Screen name="rootHome" component={RootHome} />
-          <Stack.Screen name="Search" component={Search} />
-          <Stack.Screen name="VideoPlayer" component={VideoPlayer} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Navigation />
     </Provider>
+  );
+}
+
+export function Navigation() {
+
+  let currentTheme = useSelector(state => {
+    return state.modeDark
+  })
+  return (
+    <NavigationContainer theme={currentTheme ? customDarkTheme : customDefaultTheme} >
+      <Stack.Navigator headerMode='none'>
+        <Stack.Screen name="rootHome" component={RootHome} />
+        <Stack.Screen name="Search" component={Search} />
+        <Stack.Screen name="VideoPlayer" component={VideoPlayer} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

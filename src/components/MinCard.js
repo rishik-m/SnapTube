@@ -1,9 +1,11 @@
 import React from 'react';
 import { Text, View, Image, Dimensions, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 
 const MiniCard = (props) => {
     const navigation = useNavigation();
+    const { colors } = useTheme();
+    const textColor = colors.iconColor
     return (
         <TouchableOpacity
             onPress={() => navigation.navigate("VideoPlayer", { videoId: props.videoId, title: props.title })}
@@ -21,12 +23,13 @@ const MiniCard = (props) => {
                 <View style={{ padding: 5 }}>
                     <Text style={{
                         fontSize: 18,
-                        width: Dimensions.get('screen').width / 2
+                        width: Dimensions.get('screen').width / 2,
+                        color: textColor
                     }}
                         ellipsizeMode='tail'
                         numberOfLines={3}
                     > {props.title} </Text>
-                    <Text style={{ fontSize: 12 }}> {props.channel} </Text>
+                    <Text style={{ fontSize: 12, color: textColor }}> {props.channel} </Text>
                 </View>
             </View>
         </TouchableOpacity>

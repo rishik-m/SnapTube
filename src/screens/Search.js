@@ -3,17 +3,20 @@ import { View, ScrollView, TextInput, FlatList, ActivityIndicator } from 'react-
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import MiniCard from '../components/MinCard';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTheme } from '@react-navigation/native';
 
 
 // https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=songs&type=video&key=AIzaSyDTKlsqNopd7PbJVqMEp-OELL3APAeiytc
 
 const SearchScreen = ({ navigation: { goBack } }) => {
+    const { colors } = useTheme();
+    const myColor = colors.iconColor
     const [value, setValue] = useState("")
     // const [miniCardData, setMiniCard] = useState([])
     const dispatch = useDispatch()
 
     const miniCardData = useSelector(state => {
-        return state
+        return state.cardData
     })
 
     const [loading, setLoading] = useState(false)
@@ -37,15 +40,17 @@ const SearchScreen = ({ navigation: { goBack } }) => {
                 padding: 6,
                 justifyContent: "space-around",
                 elevation: 5,
-                backgroundColor: 'white'
+                backgroundColor: colors.headerColor
             }}>
-                <MaterialIcons name="keyboard-backspace" size={24} color="black" onPress={() => goBack()} />
+                <MaterialIcons style={{
+                    color: myColor
+                }} name="keyboard-backspace" size={24} color="black" onPress={() => goBack()} />
                 <TextInput
                     value={value}
                     onChangeText={text => setValue(text)}
                     style={{ width: '70%', backgroundColor: '#e6e6e6' }}
                 />
-                <MaterialCommunityIcons name="send" size={24} color="black" onPress={() => fetchData()} />
+                <MaterialCommunityIcons style={{ color: myColor }} name="send" size={24} color="black" onPress={() => fetchData()} />
             </View>
             {loading ? <ActivityIndicator style={{ marginTop: 10 }} size="large" color="red" /> : null}
             <FlatList
