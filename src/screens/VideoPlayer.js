@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, Dimensions } from 'react-native';
+import { Video } from 'expo-av'
+import VideoPlayer from 'expo-video-player';
 
 
-const VideoPlayer = ({ route }) => {
+const VideoPlay = ({ route }) => {
     const { videoId, title } = route.params
     return (
         <View style={{ flex: 1, marginTop: 33 }}>
@@ -10,6 +12,16 @@ const VideoPlayer = ({ route }) => {
                 width: '100%',
                 height: 200
             }}>
+                <VideoPlayer
+                    videoProps={{
+                        shouldPlay: true,
+                        resizeMode: Video.RESIZE_MODE_CONTAIN,
+                        source: {
+                            uri: `https://www.youtube.com/embed/${videoId}`
+                        },
+                    }}
+                    inFullscreen={true}
+                />
 
             </View>
             <Text style={{
@@ -29,4 +41,4 @@ const VideoPlayer = ({ route }) => {
     );
 }
 
-export default VideoPlayer;
+export default VideoPlay;
